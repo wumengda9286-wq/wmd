@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>创作者合作计划</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #0d0d0d;
+      color: #fff;
+      max-width: 420px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 80px;
+      line-height: 1.5;
+    }
+
+    /* 顶部主视觉 */
+    .hero {
+      background: linear-gradient(165deg, #1a0a2e 0%, #0d0d0d 60%);
+      padding: 28px 20px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(255,45,85,0.25), transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,45,85,0.15);
+      color: #ff2d55;
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,45,85,0.3);
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+    .hero-title span {
+      color: #ff2d55;
+    }
+    .hero-sub {
+      font-size: 14px;
+      color: #aaa;
+      margin-bottom: 24px;
+    }
+    .hero-btn {
+      display: inline-block;
+      background: linear-gradient(90deg, #ff2d55, #ff6b00);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 12px 48px;
+      border-radius: 28px;
+      border: none;
+      box-shadow: 0 4px 20px rgba(255,45,85,0.4);
+    }
+
+    /* 核心卖点 */
+    .section {
+      padding: 24px 16px 8px;
+    }
+    .section-title {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .section-title::before {
+      content: '';
+      width: 3px;
+      height: 16px;
+      background: #ff2d55;
+      border-radius: 2px;
+    }
+
+    .sell-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .sell-item {
+      background: #1a1a1a;
+      border-radius: 12px;
+      padding: 16px 12px;
+      border: 1px solid #2a2a2a;
+    }
+    .sell-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+    .sell-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .sell-desc {
+      font-size: 11px;
+      color: #888;
+      line-height: 1.4;
+    }
+
+    /* 政策卡片 */
+    .policy-card {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border-radius: 12px;
+      padding: 18px 16px;
+      border: 1px solid #2a2a4a;
+      margin-bottom: 12px;
+    }
+    .policy-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 13px;
+    }
+    .policy-row:last-child {
+      border-bottom: none;
+    }
+    .policy-label {
+      color: #aaa;
+    }
+    .policy-value {
+      font-weight: 600;
+      color: #ffc107;
+    }
+    .policy-value.green {
+      color: #00e676;
+    }
+
+    /* 合作流程 */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .step-item {
+      display: flex;
+      gap: 14px;
+      padding-bottom: 20px;
+      position: relative;
+    }
+    .step-item:last-child {
+      padding-bottom: 0;
+    }
+    .step-item:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 32px;
+      bottom: 0;
+      width: 2px;
+      background: #2a2a2a;
+    }
+    .step-num {
+      width: 32px;
+      height: 32px;
+      background: #ff2d55;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+    .step-content {
+      flex: 1;
+      padding-top: 4px;
+    }
+    .step-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .step-desc {
+      font-size: 12px;
+      color: #888;
+    }
+
+    /* 团队等级 */
+    .level-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .level-card {
+      background: #1a1a1a;
+      border-radius: 10px;
+      padding: 14px;
+      border: 1px solid #2a2a2a;
+    }
+    .level-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .level-name {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .level-tag {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: #2a2a2a;
+      color: #ccc;
+    }
+    .level-tag.gold {
+      background: rgba(255,193,7,0.15);
+      color: #ffc107;
+    }
+    .level-tag.red {
+      background: rgba(255,45,85,0.15);
+      color: #ff2d55;
+    }
+    .level-desc {
+      font-size: 12px;
+      color: #888;
+      line-height: 1.5;
+    }
+
+    /* 底部固定按钮 */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 420px;
+      padding: 12px 16px 20px;
+      background: linear-gradient(to top, #0d0d0d 70%, transparent);
+      z-index: 100;
+    }
+    .bottom-btn {
+      width: 100%;
+      background: linear-gradient(90deg, #ff2d55, #ff6b00);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px;
+      border-radius: 28px;
+      border: none;
+      box-shadow: 0 4px 20px rgba(255,45,85,0.4);
+    }
+
+    /* 底部小字 */
+    .footer-note {
+      text-align: center;
+      font-size: 11px;
+      color: #555;
+      padding: 8px 16px 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 主视觉 -->
+  <div class="hero">
+    <div class="hero-badge">短剧创作者开放平台</div>
+    <div class="hero-title">0抽成<br><span>招募制作团队</span></div>
+    <div class="hero-sub">平台前期全部收入0抽成<br>数据透明 · 流量扶持 · 快速上架</div>
+    <button class="hero-btn">立即申请入驻</button>
+  </div>
+
+  <!-- 核心卖点 -->
+  <div class="section">
+    <div class="section-title">核心权益</div>
+    <div class="sell-grid">
+      <div class="sell-item">
+        <div class="sell-icon">💰</div>
+        <div class="sell-name">0抽成</div>
+        <div class="sell-desc">保护期内平台不抽成<br>收入全归团队</div>
+      </div>
+      <div class="sell-item">
+        <div class="sell-icon">📈</div>
+        <div class="sell-name">流量扶持</div>
+        <div class="sell-desc">新剧冷启动流量<br>助力打开局面</div>
+      </div>
+      <div class="sell-item">
+        <div class="sell-icon">📊</div>
+        <div class="sell-name">数据透明</div>
+        <div class="sell-desc">播放完播收益<br>实时可查</div>
+      </div>
+      <div class="sell-item">
+        <div class="sell-icon">©️</div>
+        <div class="sell-name">版权归属</div>
+        <div class="sell-desc">团队保留完整版权<br>平台仅获授权分发</div>
+      </div>
+      <div class="sell-item">
+        <div class="sell-icon">⚡</div>
+        <div class="sell-name">快速上架</div>
+        <div class="sell-desc">审核通过即可上架<br>流程简单高效</div>
+      </div>
+      <div class="sell-item">
+        <div class="sell-icon">🤝</div>
+        <div class="sell-name">长期合作</div>
+        <div class="sell-desc">优质团队可持续<br>获得资源倾斜</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 核心政策 -->
+  <div class="section">
+    <div class="section-title">合作政策（前期）</div>
+    <div class="policy-card">
+      <div class="policy-row">
+        <span class="policy-label">抽成比例</span>
+        <span class="policy-value green">0%</span>
+      </div>
+      <div class="policy-row">
+        <span class="policy-label">保护期</span>
+        <span class="policy-value">12-24个月</span>
+      </div>
+      <div class="policy-row">
+        <span class="policy-label">内容权益</span>
+        <span class="policy-value">团队保留完整版权</span>
+      </div>
+      <div class="policy-row">
+        <span class="policy-label">结算方式</span>
+        <span class="policy-value">全额结算给团队</span>
+      </div>
+      <div class="policy-row">
+        <span class="policy-label">流量支持</span>
+        <span class="policy-value">新剧冷启动扶持</span>
+      </div>
+      <div class="policy-row">
+        <span class="policy-label">数据权限</span>
+        <span class="policy-value">核心数据实时可查</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 合作流程 -->
+  <div class="section">
+    <div class="section-title">合作流程</div>
+    <div class="steps">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">提交入驻申请</div>
+          <div class="step-desc">填写团队资料、过往作品与联系方式</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">资质审核</div>
+          <div class="step-desc">平台审核通过后开通创作者后台账号</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">上传内容上架</div>
+          <div class="step-desc">提交成片与资料，合规审核通过后上架</div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">数据查看与结算</div>
+          <div class="step-desc">实时查看数据，按月全额结算收益</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 团队等级 -->
+  <div class="section">
+    <div class="section-title">团队等级与扶持</div>
+    <div class="level-list">
+      <div class="level-card">
+        <div class="level-header">
+          <div class="level-name">普通团队</div>
+          <div class="level-tag">标准政策</div>
+        </div>
+        <div class="level-desc">0抽成保护期12个月 · 基础冷启动流量 · 常规结算与数据权限</div>
+      </div>
+      <div class="level-card">
+        <div class="level-header">
+          <div class="level-name">优质团队</div>
+          <div class="level-tag gold">优先扶持</div>
+        </div>
+        <div class="level-desc">保护期可延长至18-24个月 · 额外推荐位与活动曝光 · 优先结算</div>
+      </div>
+      <div class="level-card">
+        <div class="level-header">
+          <div class="level-name">战略/头部团队</div>
+          <div class="level-tag red">定制合作</div>
+        </div>
+        <div class="level-desc">可谈更长0抽成或保底+分成 · 重点流量与联合宣发 · 商务优先对接</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    本计划解释权归平台所有 · 具体以合作协议为准
+  </div>
+
+  <!-- 底部固定申请按钮 -->
+  <div class="bottom-bar">
+    <button class="bottom-btn">立即申请入驻</button>
+  </div>
+
+</body>
+</html>
