@@ -13,7 +13,7 @@
       max-width: 420px;
       margin: 0 auto;
       min-height: 100vh;
-      padding-bottom: 80px;
+      padding-bottom: 70px;
       line-height: 1.5;
     }
 
@@ -71,7 +71,7 @@
       box-shadow: 0 4px 20px rgba(255,45,85,0.4);
     }
 
-    /* 核心卖点 */
+    /* 通用区块 */
     .section {
       padding: 24px 16px 8px;
     }
@@ -241,36 +241,42 @@
       line-height: 1.5;
     }
 
-    /* 底部固定按钮 */
-    .bottom-bar {
+    .footer-note {
+      text-align: center;
+      font-size: 11px;
+      color: #555;
+      padding: 16px 16px 24px;
+    }
+
+    /* 底部 Tab（与福利页一致） */
+    .tabbar {
       position: fixed;
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
       max-width: 420px;
-      padding: 12px 16px 20px;
-      background: linear-gradient(to top, #0d0d0d 70%, transparent);
+      height: 56px;
+      background: #141414;
+      border-top: 1px solid #222;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
       z-index: 100;
     }
-    .bottom-btn {
-      width: 100%;
-      background: linear-gradient(90deg, #ff2d55, #ff6b00);
-      color: #fff;
-      font-size: 16px;
-      font-weight: 600;
-      padding: 14px;
-      border-radius: 28px;
-      border: none;
-      box-shadow: 0 4px 20px rgba(255,45,85,0.4);
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      font-size: 10px;
+      color: #666;
     }
-
-    /* 底部小字 */
-    .footer-note {
-      text-align: center;
-      font-size: 11px;
-      color: #555;
-      padding: 8px 16px 24px;
+    .tab-item.active {
+      color: #ff2d55;
+    }
+    .tab-icon {
+      font-size: 20px;
     }
   </style>
 </head>
@@ -419,9 +425,24 @@
     本计划解释权归平台所有 · 具体以合作协议为准
   </div>
 
-  <!-- 底部固定申请按钮 -->
-  <div class="bottom-bar">
-    <button class="bottom-btn">立即申请入驻</button>
+  <!-- 底部 Tab（与福利页一致） -->
+  <div class="tabbar">
+    <div class="tab-item">
+      <div class="tab-icon">🏠</div>
+      <div>首页</div>
+    </div>
+    <div class="tab-item">
+      <div class="tab-icon">▶</div>
+      <div>剧场</div>
+    </div>
+    <div class="tab-item active">
+      <div class="tab-icon">🎁</div>
+      <div>福利</div>
+    </div>
+    <div class="tab-item">
+      <div class="tab-icon">👤</div>
+      <div>我的</div>
+    </div>
   </div>
 
 </body>
