@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>短剧创作者后台</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #333; }
+    
+    .layout { display: flex; min-height: 100vh; }
+    
+    /* 侧边栏 */
+    .sidebar { width: 220px; background: #1f2d3d; color: #fff; flex-shrink: 0; }
+    .logo { padding: 20px; font-size: 18px; font-weight: 600; border-bottom: 1px solid #2c3e50; }
+    .logo span { color: #409eff; }
+    .menu { padding: 12px 0; }
+    .menu-item { padding: 12px 24px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 10px; font-size: 14px; }
+    .menu-item:hover, .menu-item.active { background: #409eff; }
+    .menu-item i { font-style: normal; width: 18px; text-align: center; }
+    
+    /* 主内容区 */
+    .main { flex: 1; display: flex; flex-direction: column; }
+    .header { height: 60px; background: #fff; border-bottom: 1px solid #e6e9ed; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; }
+    .header-left { font-size: 16px; font-weight: 500; }
+    .header-right { display: flex; align-items: center; gap: 20px; font-size: 14px; color: #666; }
+    .avatar { width: 32px; height: 32px; background: #409eff; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+    
+    .content { padding: 24px; flex: 1; overflow-y: auto; }
+    
+    /* 通用卡片 */
+    .card { background: #fff; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+    .card-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+    
+    /* 数据概览 */
+    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+    .stat-card { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+    .stat-card .label { font-size: 13px; color: #909399; margin-bottom: 8px; }
+    .stat-card .value { font-size: 24px; font-weight: 600; color: #303133; }
+    .stat-card .trend { font-size: 12px; color: #67c23a; margin-top: 6px; }
+    
+    /* 表格 */
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #ebeef5; }
+    th { background: #fafafa; color: #606266; font-weight: 500; }
+    td { color: #606266; }
+    .status { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+    .status-success { background: #f0f9eb; color: #67c23a; }
+    .status-warning { background: #fdf6ec; color: #e6a23c; }
+    .status-info { background: #f4f4f5; color: #909399; }
+    
+    /* 按钮 */
+    .btn { display: inline-block; padding: 8px 16px; border-radius: 4px; font-size: 13px; cursor: pointer; border: none; transition: all 0.2s; }
+    .btn-primary { background: #409eff; color: #fff; }
+    .btn-primary:hover { background: #66b1ff; }
+    .btn-default { background: #fff; border: 1px solid #dcdfe6; color: #606266; }
+    .btn-default:hover { border-color: #409eff; color: #409eff; }
+    .btn-group { display: flex; gap: 8px; }
+    
+    /* 表单 */
+    .form-item { margin-bottom: 16px; }
+    .form-item label { display: block; font-size: 13px; color: #606266; margin-bottom: 6px; }
+    .form-item input, .form-item select, .form-item textarea { width: 100%; padding: 8px 12px; border: 1px solid #dcdfe6; border-radius: 4px; font-size: 14px; outline: none; }
+    .form-item input:focus, .form-item textarea:focus { border-color: #409eff; }
+    
+    /* 页面切换 */
+    .page { display: none; }
+    .page.active { display: block; }
+    
+    /* 空状态 */
+    .empty { text-align: center; padding: 60px 0; color: #909399; }
+    
+    @media (max-width: 1000px) {
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <!-- 侧边栏 -->
+    <div class="sidebar">
+      <div class="logo">短剧<span>创作者中心</span></div>
+      <div class="menu">
+        <div class="menu-item active" data-page="dashboard"><i>📊</i> 数据概览</div>
+        <div class="menu-item" data-page="content"><i>🎬</i> 内容管理</div>
+        <div class="menu-item" data-page="upload"><i>📤</i> 上传作品</div>
+        <div class="menu-item" data-page="revenue"><i>💰</i> 收益结算</div>
+        <div class="menu-item" data-page="message"><i>🔔</i> 消息通知</div>
+        <div class="menu-item" data-page="account"><i>👤</i> 账号设置</div>
+        <div class="menu-item" data-page="help"><i>❓</i> 帮助中心</div>
+      </div>
+    </div>
+
+    <!-- 主区域 -->
+    <div class="main">
+      <div class="header">
+        <div class="header-left" id="pageTitle">数据概览</div>
+        <div class="header-right">
+          <span>当前等级：优质团队</span>
+          <span>0抽成保护期剩余 186 天</span>
+          <div class="avatar">创</div>
+        </div>
+      </div>
+
+      <div class="content">
+        <!-- 数据概览 -->
+        <div class="page active" id="dashboard">
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="label">今日播放量</div>
+              <div class="value">128,456</div>
+              <div class="trend">↑ 12.6% 较昨日</div>
+            </div>
+            <div class="stat-card">
+              <div class="label">今日收益（元）</div>
+              <div class="value">3,842.50</div>
+              <div class="trend">↑ 8.3% 较昨日</div>
+            </div>
+            <div class="stat-card">
+              <div class="label">本月总播放</div>
+              <div class="value">2,156,890</div>
+              <div class="trend">↑ 23.1% 较上月</div>
+            </div>
+            <div class="stat-card">
+              <div class="label">本月预估收益</div>
+              <div class="value">68,420.00</div>
+              <div class="trend">保护期内 0 抽成</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">最近作品表现</div>
+            <table>
+              <thead>
+                <tr>
+                  <th>剧名</th>
+                  <th>状态</th>
+                  <th>总播放</th>
+                  <th>完播率</th>
+                  <th>昨日收益</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>顶级私厨</td>
+                  <td><span class="status status-success">已上架</span></td>
+                  <td>1,286,500</td>
+                  <td>68.2%</td>
+                  <td>¥1,245.60</td>
+                  <td><button class="btn btn-default">查看数据</button></td>
+                </tr>
+                <tr>
+                  <td>重生之商业帝国</td>
+                  <td><span class="status status-success">已上架</span></td>
+                  <td>856,200</td>
+                  <td>71.5%</td>
+                  <td>¥892.30</td>
+                  <td><button class="btn btn-default">查看数据</button></td>
+                </tr>
+                <tr>
+                  <td>闪婚总裁夫人</td>
+                  <td><span class="status status-warning">审核中</span></td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td><button class="btn btn-default">查看详情</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 内容管理 -->
+        <div class="page" id="content">
+          <div class="card">
+            <div class="card-title">
+              <span>我的作品</span>
+              <button class="btn btn-primary" onclick="switchPage('upload')">+ 上传新剧</button>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>剧名</th>
+                  <th>集数</th>
+                  <th>状态</th>
+                  <th>上传时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>顶级私厨</td>
+                  <td>80集</td>
+                  <td><span class="status status-success">已上架</span></td>
+                  <td>2026-09-12</td>
+                  <td class="btn-group">
+                    <button class="btn btn-default">编辑</button>
+                    <button class="btn btn-default">数据</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>重生之商业帝国</td>
+                  <td>60集</td>
+                  <td><span class="status status-success">已上架</span></td>
+                  <td>2026-08-28</td>
+                  <td class="btn-group">
+                    <button class="btn btn-default">编辑</button>
+                    <button class="btn btn-default">数据</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>闪婚总裁夫人</td>
+                  <td>70集</td>
+                  <td><span class="status status-warning">审核中</span></td>
+                  <td>2026-10-08</td>
+                  <td class="btn-group">
+                    <button class="btn btn-default">查看</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 上传作品 -->
+        <div class="page" id="upload">
+          <div class="card">
+            <div class="card-title">上传新剧</div>
+            <div class="form-item">
+              <label>剧名 *</label>
+              <input type="text" placeholder="请输入剧名">
+            </div>
+            <div class="form-item">
+              <label>简介 *</label>
+              <textarea rows="3" placeholder="请输入剧情简介"></textarea>
+            </div>
+            <div class="form-item">
+              <label>标签（多个用空格分隔）</label>
+              <input type="text" placeholder="例如：甜宠 重生 总裁">
+            </div>
+            <div class="form-item">
+              <label>封面图 *</label>
+              <input type="file" accept="image/*">
+            </div>
+            <div class="form-item">
+              <label>分集视频上传 *</label>
+              <input type="file" accept="video/*" multiple>
+              <div style="font-size:12px;color:#909399;margin-top:6px;">支持批量选择，建议单集不超过500MB</div>
+            </div>
+            <div style="margin-top:24px;">
+              <button class="btn btn-primary">提交审核</button>
+              <button class="btn btn-default" style="margin-left:8px;">保存草稿</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 收益结算 -->
+        <div class="page" id="revenue">
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="label">可提现余额（元）</div>
+              <div class="value">28,650.80</div>
+            </div>
+            <div class="stat-card">
+              <div class="label">本月预估收益</div>
+              <div class="value">68,420.00</div>
+            </div>
+            <div class="stat-card">
+              <div class="label">累计总收益</div>
+              <div class="value">356,890.50</div>
+            </div>
+            <div class="stat-card">
+              <div class="label">当前抽成比例</div>
+              <div class="value" style="color:#67c23a;">0%</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">
+              <span>结算记录</span>
+              <button class="btn btn-primary">申请提现</button>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>结算周期</th>
+                  <th>收益金额</th>
+                  <th>抽成</th>
+                  <th>实际到账</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2026年9月</td>
+                  <td>¥52,380.20</td>
+                  <td>0%</td>
+                  <td>¥52,380.20</td>
+                  <td><span class="status status-success">已到账</span></td>
+                </tr>
+                <tr>
+                  <td>2026年8月</td>
+                  <td>¥41,256.80</td>
+                  <td>0%</td>
+                  <td>¥41,256.80</td>
+                  <td><span class="status status-success">已到账</span></td>
+                </tr>
+                <tr>
+                  <td>2026年7月</td>
+                  <td>¥38,920.50</td>
+                  <td>0%</td>
+                  <td>¥38,920.50</td>
+                  <td><span class="status status-success">已到账</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 消息通知 -->
+        <div class="page" id="message">
+          <div class="card">
+            <div class="card-title">消息通知</div>
+            <table>
+              <thead>
+                <tr>
+                  <th>时间</th>
+                  <th>类型</th>
+                  <th>内容</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2026-10-09 14:22</td>
+                  <td>审核通知</td>
+                  <td>《闪婚总裁夫人》已提交审核，预计1-2个工作日完成</td>
+                  <td><span class="status status-info">未读</span></td>
+                </tr>
+                <tr>
+                  <td>2026-10-08 09:15</td>
+                  <td>结算通知</td>
+                  <td>2026年9月收益 ¥52,380.20 已结算到账</td>
+                  <td><span class="status status-success">已读</span></td>
+                </tr>
+                <tr>
+                  <td>2026-10-05 16:40</td>
+                  <td>系统通知</td>
+                  <td>您的团队已升级为「优质团队」，0抽成保护期延长至24个月</td>
+                  <td><span class="status status-success">已读</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 账号设置 -->
+        <div class="page" id="account">
+          <div class="card">
+            <div class="card-title">账号与团队信息</div>
+            <div class="form-item">
+              <label>团队名称</label>
+              <input type="text" value="星火短剧工作室">
+            </div>
+            <div class="form-item">
+              <label>联系人</label>
+              <input type="text" value="张经理">
+            </div>
+            <div class="form-item">
+              <label>联系电话</label>
+              <input type="text" value="138****8888">
+            </div>
+            <div class="form-item">
+              <label>收款账户</label>
+              <input type="text" value="招商银行 6222 **** **** 1234">
+            </div>
+            <div style="margin-top:20px;">
+              <button class="btn btn-primary">保存修改</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 帮助中心 -->
+        <div class="page" id="help">
+          <div class="card">
+            <div class="card-title">帮助中心</div>
+            <div style="line-height: 2; font-size: 14px; color: #606266;">
+              <p><strong>1. 如何上传作品？</strong><br>进入「上传作品」页面，填写剧名、简介、标签，上传封面和分集视频后提交审核即可。</p>
+              <p style="margin-top:16px;"><strong>2. 审核一般需要多久？</strong><br>正常情况下1-2个工作日，节假日可能延长。</p>
+              <p style="margin-top:16px;"><strong>3. 0抽成保护期是多久？</strong><br>新入驻团队默认12个月，优质团队可延长至18-24个月。</p>
+              <p style="margin-top:16px;"><strong>4. 收益如何结算？</strong><br>按自然月结算，次月15日前完成上月收益结算。</p>
+              <p style="margin-top:16px;"><strong>5. 需要帮助？</strong><br>可联系对接商务或提交工单，我们会在1个工作日内回复。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const menuItems = document.querySelectorAll('.menu-item');
+    const pages = document.querySelectorAll('.page');
+    const pageTitle = document.getElementById('pageTitle');
+
+    const titles = {
+      dashboard: '数据概览',
+      content: '内容管理',
+      upload: '上传作品',
+      revenue: '收益结算',
+      message: '消息通知',
+      account: '账号设置',
+      help: '帮助中心'
+    };
+
+    function switchPage(pageId) {
+      pages.forEach(p => p.classList.remove('active'));
+      menuItems.forEach(m => m.classList.remove('active'));
+      
+      document.getElementById(pageId).classList.add('active');
+      document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
+      pageTitle.textContent = titles[pageId];
+    }
+
+    menuItems.forEach(item => {
+      item.addEventListener('click', () => {
+        switchPage(item.dataset.page);
+      });
+    });
+  </script>
+</body>
+</html>
