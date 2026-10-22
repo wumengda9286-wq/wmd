@@ -192,13 +192,13 @@
 
   <defs>
     <pattern id="u1060_img_bgp" patternUnits="userSpaceOnUse" alignment="0 0" imageRepeat="None" />
-    <mask fill="white" id="u1060_img_cl78">
+    <mask fill="white" id="u1060_img_cl98">
       <path d="M 0 12  C 0 5.279999999999999  5.279999999999999 0  12 0  C 18.72 0  24 5.279999999999999  24 12  C 24 18.72  18.72 24  12 24  C 5.279999999999999 24  0 18.72  0 12  Z " fill-rule="evenodd" />
     </mask>
   </defs>
   <g transform="matrix(1 0 0 1 -1013 -147 )">
     <path d="M 0 12  C 0 5.279999999999999  5.279999999999999 0  12 0  C 18.72 0  24 5.279999999999999  24 12  C 24 18.72  18.72 24  12 24  C 5.279999999999999 24  0 18.72  0 12  Z " fill-rule="nonzero" fill="rgba(255, 255, 255, 1)" stroke="none" transform="matrix(1 0 0 1 1013 147 )" class="fill" />
-    <path d="M 0 12  C 0 5.279999999999999  5.279999999999999 0  12 0  C 18.72 0  24 5.279999999999999  24 12  C 24 18.72  18.72 24  12 24  C 5.279999999999999 24  0 18.72  0 12  Z " stroke-width="0" stroke-dasharray="0" stroke="rgba(94, 92, 92, 1)" fill="none" transform="matrix(1 0 0 1 1013 147 )" class="stroke" mask="url(#u1060_img_cl78)" />
+    <path d="M 0 12  C 0 5.279999999999999  5.279999999999999 0  12 0  C 18.72 0  24 5.279999999999999  24 12  C 24 18.72  18.72 24  12 24  C 5.279999999999999 24  0 18.72  0 12  Z " stroke-width="0" stroke-dasharray="0" stroke="rgba(94, 92, 92, 1)" fill="none" transform="matrix(1 0 0 1 1013 147 )" class="stroke" mask="url(#u1060_img_cl98)" />
   </g>
           </svg>
           <div id="u1060_text" class="text ">
@@ -228,13 +228,25 @@
           <input id="u1063_input" type="text" value="14352" class="u1063_input"/>
         </div>
 
-        <!-- 文章选择 (下拉列表框) -->
-        <div id="u1064" class="ax_default droplist ax_default_hidden transition notrs" data-label="文章选择" style="display:none; visibility: hidden">
-          <div id="u1064_div" class=""></div>
-          <select id="u1064_input" class="u1064_input">
-            <option class="u1064_input_option" selected value="请输入文章ID或者文章标题">请输入文章ID或者文章标题</option>
-            <option class="u1064_input_option" value="文章标题内容">文章标题内容</option>
-          </select>
+        <!-- 文章选择 (组合) -->
+        <div id="u1064" class="ax_default ax_default_hidden" data-label="文章选择" style="display:none; visibility: hidden" data-left="410" data-top="627" data-width="625" data-height="60" layer-opacity="1">
+
+          <!-- Unnamed (下拉列表框) -->
+          <div id="u1065" class="ax_default droplist transition notrs">
+            <div id="u1065_div" class=""></div>
+            <select id="u1065_input" class="u1065_input">
+              <option class="u1065_input_option" selected value="请输入文章ID或者文章标题">请输入文章ID或者文章标题</option>
+              <option class="u1065_input_option" value="文章标题内容">文章标题内容</option>
+            </select>
+          </div>
+
+          <!-- Unnamed (矩形) -->
+          <div id="u1066" class="ax_default _文本 transition notrs">
+            <div id="u1066_div" class=""></div>
+            <div id="u1066_text" class="text ">
+              <p><span>必填</span></p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
